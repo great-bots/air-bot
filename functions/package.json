@@ -1,7 +1,7 @@
 {
   "name": "air-bot",
   "version": "1.0.0",
-  "description": "Check air pollution in cities around the world",
+  "description": "Check air pollution in cities around the world via the Dialogflow bot",
   "author": "Jakub Biesiada",
   "license": "MIT",
   "main": "lib/index.js",
