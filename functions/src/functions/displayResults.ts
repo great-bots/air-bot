@@ -1,9 +1,7 @@
 import * as functions from 'firebase-functions';
 import { WebhookClient } from 'dialogflow-fulfillment';
-
-import { getCityCoords } from './functions/getCityCoords';
-
-import { airly } from './config/airly';
+import cities from 'all-the-cities';
+import Airly from 'airly';
 
 process.env.DEBUG = 'dialogflow:debug';
 
@@ -12,6 +10,8 @@ export const packageBot = functions.https.onRequest((request, response) => {
 
   console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
   console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
+
+  const airly = new Airly(process.env.AIRLY_KEY as any);
 
   const getInstallations = async ({ latitude, longitude }: any) => {
     const installations = await airly.nearestInstallations(
@@ -25,7 +25,7 @@ export const packageBot = functions.https.onRequest((request, response) => {
       agent.add('No installations were found in your area.');
     }
 
-    await displayResults(installations);
+    return installations;
   };
 
   const displayResults = async (installations: any) => {
@@ -35,34 +35,42 @@ export const packageBot = functions.https.onRequest((request, response) => {
 
     const { indexes, values, standards } = data.current;
 
-    agent.add(`Location: ${city}, ${street}`);
-    agent.add(`Description: ${indexes[0].description}`);
-    agent.add(`Advice: ${indexes[0].advice}\n`);
-    agent.add(`Particulate Matter (PM) in μg/m3:`);
+    console.log(`Location: ${city}, ${street}`);
+    console.log(`Description: ${indexes[0].description}`);
+    console.log(`Advice: ${indexes[0].advice}\n`);
+    console.log(`Particulate Matter (PM) in μg/m3:`);
 
     values
       .filter((item: any) => item.name === 'PM25' || item.name === 'PM10')
-      .map(({ name, value }: any) => agent.add(`${name}: ${value}`));
+      .map(({ name, value }: any) => console.log(`${name}: ${value}`));
 
-    agent.add('\nAir quality guidelines recommended by WHO (24-hour mean):');
+    console.log('\nAir quality guidelines recommended by WHO (24-hour mean):');
 
     standards.map(({ pollutant, limit }: any) =>
-      agent.add(`${pollutant}: ${limit} μg/m3`)
+      console.log(`${pollutant}: ${limit} μg/m3`)
     );
 
-    agent.add('\nReady more about air quality here: https://bit.ly/2tbIhek');
+    console.log('\nReady more about air quality here: https://bit.ly/2tbIhek');
   };
 
   async function airPollutionStatusNearby(agent: WebhookClient) {
-    const { longitude, latitude } = agent.parameters;
+    const { latitude, longitude } = agent.parameters;
 
-    await getInstallations({ longitude, latitude });
+    const installations = await getInstallations({ latitude, longitude });
+
+    displayResults(installations);
   }
 
   async function airPollutionStatus(agent: WebhookClient) {
-    const [longitude, latitude] = getCityCoords(agent.parameters.city);
+    const cityInfo = cities.filter((city: any) => {
+      return city.name.match(agent.parameters.city);
+    });
 
-    await getInstallations({ longitude, latitude });
+    const [longitude, latitude] = cityInfo[0].loc.coordinates;
+
+    const installations = await getInstallations({ latitude, longitude });
+
+    displayResults(installations);
   }
 
   const intentMap = new Map();
