@@ -24,11 +24,11 @@
     "all-the-cities": "^3.0.0",
     "dialogflow": "^1.2.0",
     "dialogflow-fulfillment": "^0.6.1",
-    "firebase-admin": "^8.9.2",
+    "firebase-admin": "^8.10.0",
     "firebase-functions": "^3.3.0"
   },
   "devDependencies": {
-    "tslint": "^6.0.0",
-    "typescript": "^3.8.2"
+    "tslint": "^6.1.0",
+    "typescript": "^3.8.3"
   }
 }
