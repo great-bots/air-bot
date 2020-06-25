@@ -1,6 +1,8 @@
+import type { Coords } from '../types/Coords';
+
 export interface Installation {
   id: number;
-  location: Location;
+  location: Coords;
   address: Address;
   elevation: number;
   airly: boolean;
@@ -23,9 +25,4 @@ interface Address {
   number: string;
   displayAddress1: string;
   displayAddress2: string;
-}
-
-interface Location {
-  latitude: number;
-  longitude: number;
 }
