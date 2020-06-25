@@ -5,6 +5,11 @@ import { getCityCoords } from './functions/getCityCoords';
 
 import { airly } from './config/airly';
 
+import { Installation } from './interfaces/Installation';
+import { Measurement } from './interfaces/Measurement';
+
+import type { Coords } from './types/Coords';
+
 process.env.DEBUG = 'dialogflow:debug';
 
 export const packageBot = functions.https.onRequest((request, response) => {
@@ -13,7 +18,7 @@ export const packageBot = functions.https.onRequest((request, response) => {
   console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
   console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
 
-  const getInstallations = async ({ latitude, longitude }: any) => {
+  const getInstallations = async ({ latitude, longitude }: Coords) => {
     const installations = await airly.nearestInstallations(
       latitude,
       longitude,
@@ -28,8 +33,10 @@ export const packageBot = functions.https.onRequest((request, response) => {
     await displayResults(installations);
   };
 
-  const displayResults = async (installations: any) => {
-    const data = await airly.installationMeasurements(installations[0].id);
+  const displayResults = async (installations: Installation[]) => {
+    const data: Measurement = await airly.installationMeasurements(
+      installations[0].id
+    );
 
     const { city, street } = installations[0].address;
 
@@ -41,12 +48,12 @@ export const packageBot = functions.https.onRequest((request, response) => {
     agent.add(`Particulate Matter (PM) in μg/m3:`);
 
     values
-      .filter((item: any) => item.name === 'PM25' || item.name === 'PM10')
-      .map(({ name, value }: any) => agent.add(`${name}: ${value}`));
+      .filter((item) => item.name === 'PM25' || item.name === 'PM10')
+      .map(({ name, value }) => agent.add(`${name}: ${value}`));
 
     agent.add('\nAir quality guidelines recommended by WHO (24-hour mean):');
 
-    standards.map(({ pollutant, limit }: any) =>
+    standards.map(({ pollutant, limit }) =>
       agent.add(`${pollutant}: ${limit} μg/m3`)
     );
 
@@ -56,7 +63,7 @@ export const packageBot = functions.https.onRequest((request, response) => {
   async function airPollutionStatusNearby(agent: WebhookClient) {
     const { longitude, latitude } = agent.parameters;
 
-    await getInstallations({ longitude, latitude });
+    await getInstallations({ longitude, latitude } as any);
   }
 
   async function airPollutionStatus(agent: WebhookClient) {
