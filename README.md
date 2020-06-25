@@ -1,6 +1,7 @@
 # Air Bot
 
 ## About
+
 Check air pollution in cities around the world via the Dialogflow bot.
 
 ## Setup
@@ -11,14 +12,24 @@ Check air pollution in cities around the world via the Dialogflow bot.
 git clone https://github.com/great-bots/air-bot.git
 ```
 
-##### 2. Go to directory
+##### 2. Go to project directory
 
 ```sh
 cd air-bot
+```
+
+##### 3. Set environment variables
+
+- Edit `.env.example` file
+- Rename `.env.example` to `.env`
+
+##### 4. Go to functions directory
+
+```sh
 cd functions
 ```
 
-##### 3. Install dependencies
+##### 5. Install dependencies
 
 ```sh
 npm i
@@ -27,12 +38,7 @@ npm i
 yarn
 ```
 
-##### 4. Set environment variables
-
-- Edit `.env.example` file
-- Rename `.env.example` to `.env`
-
-##### 5. Run
+##### 6. Run
 
 ```sh
 npm start
@@ -49,4 +55,5 @@ yarn start
 - [Airly API](https://developer.airly.eu/api/)
 
 ## License
+
 This project is licensed under the MIT License © 2020-present Jakub Biesiada
