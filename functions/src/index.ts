@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import { WebhookClient } from 'dialogflow-fulfillment';
 
-import { getCityCoords } from './functions/getCityCoords';
+import { getCityCoords } from './helpers/getCityCoords';
 
 import { airly } from './config/airly';
 
