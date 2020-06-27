@@ -63,7 +63,7 @@ export const packageBot = functions.https.onRequest((request, response) => {
   async function airPollutionStatusNearby(agent: WebhookClient) {
     const { longitude, latitude } = agent.parameters;
 
-    await getInstallations({ longitude, latitude } as any);
+    await getInstallations({ longitude, latitude });
   }
 
   async function airPollutionStatus(agent: WebhookClient) {
