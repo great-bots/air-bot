@@ -20,8 +20,8 @@ cd air-bot
 
 ##### 3. Set environment variables
 
-- Edit `env.example.json` file
-- Rename `env.example.json` to `env.json`
+- Copy `env.example.json` file to `env.json`
+- Set environment variables in `env.json`
 
 ##### 4. Go to functions directory
 
