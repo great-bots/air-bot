@@ -1,4 +1,4 @@
-import type { Coords } from '../types/Coords';
+import type { Coords } from './Coords';
 
 export interface Installation {
   id: number;

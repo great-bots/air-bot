@@ -1,6 +1,6 @@
 import cities from 'all-the-cities';
 
-import { City } from '../interfaces/City';
+import type { City } from '../types/City';
 
 export const getCityCoords = (cityName: string) => {
   const cityInfo = cities.filter((city: City) => {

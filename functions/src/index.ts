@@ -5,9 +5,8 @@ import { getCityCoords } from './helpers/getCityCoords';
 
 import { airly } from './config/airly';
 
-import { Installation } from './interfaces/Installation';
-import { Measurement } from './interfaces/Measurement';
-
+import type { Installation } from './types/Installation';
+import type { Measurement } from './types/Measurement';
 import type { Coords } from './types/Coords';
 
 process.env.DEBUG = 'dialogflow:debug';
